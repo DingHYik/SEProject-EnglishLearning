@@ -1,8 +1,8 @@
 <template>
   <header :class="{ scrolled: isScrolled }" id="mainHeader">
     <div class="container">
-      <UrlBar />
-      <div class="main-nav">
+        <UrlBar />
+        <div class="main-nav">
         <div class="nav-left">
           <button class="mobile-menu-btn" @click="toggleMobileMenu">
             <i :class="['fas', mobileMenuOpen ? 'fa-times' : 'fa-bars']"></i>
@@ -20,8 +20,9 @@
             <a 
               v-for="(link, index) in navLinks" 
               :key="index"
-              :href="link.url"
-              :class="{ active: link.isActive }"
+              href="javascript:;"
+              :class="{ active: currentPage === link.key }"
+              @click.prevent="navigate(link.key)"
             >
               {{ link.text }}
             </a>
@@ -38,19 +39,29 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, inject } from 'vue'
 import UrlBar from '../common/UrlBar.vue'
 
 const isScrolled = ref(false)
 const mobileMenuOpen = ref(false)
 
+// 从 App 提供的 currentPage 注入来控制页面切换
+const currentPageRef = inject('currentPage', ref('home'))
+const currentPage = currentPageRef
+
 const navLinks = ref([
-  { text: '首页', url: '#', isActive: true },
-  { text: '课程', url: '#', isActive: false },
-  { text: '题库', url: '#', isActive: false },
-  { text: '时间表', url: '#', isActive: false },
-  { text: '单词打卡', url: '#', isActive: false },
+  { key: 'home', text: '首页' },
+  { key: 'courses', text: '课程' },
+  { key: 'questions', text: '题库' },
+  { key: 'schedule', text: '时间表' },
+  { key: 'checkin', text: '单词打卡' },
+  { key: 'ai', text: 'AI' }
 ])
+
+const navigate = (key) => {
+  if (!currentPage || typeof currentPage.value === 'undefined') return
+  currentPage.value = key
+}
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 10

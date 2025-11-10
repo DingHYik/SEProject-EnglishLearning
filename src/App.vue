@@ -1,9 +1,16 @@
 <template>
   <div class="app">
     <Header />
+
     <main>
       <div class="container">
-        <div class="content-wrapper">
+        <!-- 如果是 AI 页面，则显示大聊天页面，隐藏侧边栏 -->
+        <div v-if="currentPage === 'ai'" class="ai-page-wrapper">
+          <AiChat />
+        </div>
+
+        <!-- 默认布局 -->
+        <div v-else class="content-wrapper">
           <LeftSidebar />
           <div class="content-center">
             <CheckinCard />
@@ -14,11 +21,13 @@
         </div>
       </div>
     </main>
+
     <Footer />
   </div>
 </template>
 
 <script setup>
+import { ref, provide } from 'vue'
 import Header from './components/layout/Header.vue'
 import Footer from './components/layout/Footer.vue'
 import LeftSidebar from './components/sidebar/LeftSidebar.vue'
@@ -26,6 +35,11 @@ import RightSidebar from './components/sidebar/RightSidebar.vue'
 import CheckinCard from './components/main/CheckinCard.vue'
 import ScheduleCard from './components/main/ScheduleCard.vue'
 import ArticleList from './components/main/ArticleList.vue'
+import AiChat from './views/AiChat.vue'
+
+// 全局页面状态（简单路由替代）
+const currentPage = ref('home')
+provide('currentPage', currentPage)
 </script>
 
 <style>

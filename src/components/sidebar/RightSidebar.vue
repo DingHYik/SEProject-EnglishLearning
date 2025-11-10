@@ -12,15 +12,12 @@
       </button>
     </div>
     
-    <div class="sidebar-card">
-      <AiAssistant />
-    </div>
+    <!-- AI 辅助小面板已移除：改为顶部 AI 标签页跳转到独立聊天页面 -->
   </aside>
 </template>
 
 <script setup>
 import DictionaryCard from '../rightSidebar/DictionaryCard.vue'
-import AiAssistant from '../rightSidebar/AiAssistant.vue'
 
 const changeDictionary = () => {
   console.log('更换词典')
